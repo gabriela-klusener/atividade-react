@@ -1,54 +1,96 @@
+
 import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 // DADOS DOS FORMULÁRIOS
 const forms = [
   {
     id: "pessoal",
-    title: "Dados pessoais",
-    description: "Informações pessoais e contato.",
-    icon: "👤",
+    title: "Informações pessoais",
+    description: "Preencha seus dados pessoais.",
     fields: [
-      { name: "nome", label: "Nome completo", required: true },
+      { name: "nome", label: "Nome completo", type: "text", required: true },
       { name: "email", label: "E-mail", type: "email", required: true },
-      { name: "telefone", label: "Telefone", required: true },
+      { name: "telefone", label: "Telefone", type: "tel", required: true },
       { name: "nascimento", label: "Data de nascimento", type: "date", required: true }
     ]
   },
   {
     id: "profissional",
-    title: "Dados profissionais",
-    description: "Sua formação e experiência.",
-    icon: "💼",
+    title: "Informações profissionais",
+    description: "Conte um pouco sobre sua vida profissional.",
     fields: [
-      { name: "ocupacao", label: "Ocupação atual", required: true },
-      { name: "formacao", label: "Formação acadêmica", required: true },
-      { name: "experiencia", label: "Experiência profissional", required: true },
-      { name: "linkedin", label: "LinkedIn (opcional)" }
+      { name: "profissao", label: "Profissão", type: "text", required: true },
+      { name: "empresa", label: "Empresa", type: "text", required: true },
+      { name: "cargo", label: "Cargo", type: "text", required: true },
+      { name: "experiencia", label: "Tempo de experiência", type: "text", required: true },
+      { name: "linkedin", label: "LinkedIn", type: "url", required: false }
     ]
   },
   {
     id: "endereco",
-    title: "Endereço",
-    description: "Informações sobre seu endereço.",
-    icon: "📍",
+    title: "Informações de endereço",
+    description: "Informe seu endereço atual.",
     fields: [
-      { name: "cep", label: "CEP", required: true },
-      { name: "rua", label: "Rua / Avenida", required: true },
-      { name: "numero", label: "Número", required: true },
-      { name: "cidade", label: "Cidade", required: true },
-      { name: "estado", label: "Estado", required: true }
+      { name: "cep", label: "CEP", type: "text", required: true },
+      { name: "rua", label: "Rua", type: "text", required: true },
+      { name: "numero", label: "Número", type: "text", required: true },
+      { name: "bairro", label: "Bairro", type: "text", required: true },
+      { name: "cidade", label: "Cidade", type: "text", required: true },
+      { name: "estado", label: "Estado", type: "text", required: true }
     ]
   }
 ];
 
-// COMPONENTE 1: ACORDEÃO
+// PERGUNTAS FREQUENTES
+const faqItems = [
+  {
+    question: "Como preencher os formulários?",
+    answer: "Na página inicial, escolha um formulário e preencha os campos solicitados."
+  },
+  {
+    question: "Posso alterar minhas respostas?",
+    answer: "Sim! Você pode voltar a qualquer formulário e modificar suas respostas."
+  },
+  {
+    question: "Minhas informações ficam salvas?",
+    answer: "Sim! As respostas ficam salvas no armazenamento local do navegador."
+  },
+  {
+    question: "Como sei que terminei um formulário?",
+    answer: "Uma mensagem de confirmação será exibida quando todos os campos obrigatórios forem preenchidos."
+  }
+];
+
+// BARRA DE PROGRESSO
+function ProgressBar({ value }) {
+  return (
+    <div className="progress-area">
+      <div className="progress-label">
+        <span>Progresso do formulário</span>
+        <strong>{value}%</strong>
+      </div>
+
+      <div className="progress-track">
+        <div
+          className="progress-fill"
+          style={{ width: `${value}%` }}
+        />
+      </div>
+    </div>
+  );
+}
+
+// ACORDEÃO
 function Accordion({ items }) {
   const [openIndex, setOpenIndex] = useState(null);
 
   return (
     <section className="faq">
       <h2>Perguntas frequentes</h2>
-      <p className="subtitle">Tire suas dúvidas sobre os formulários.</p>
+      <p className="subtitle">
+        Confira algumas dúvidas sobre o funcionamento da plataforma.
+      </p>
 
       {items.map((item, index) => (
         <div className="accordion-item" key={index}>
@@ -57,7 +99,6 @@ function Accordion({ items }) {
             onClick={() =>
               setOpenIndex(openIndex === index ? null : index)
             }
-            aria-expanded={openIndex === index}
           >
             {item.question}
             <span>{openIndex === index ? "−" : "+"}</span>
@@ -74,7 +115,63 @@ function Accordion({ items }) {
   );
 }
 
-// COMPONENTE 2: PAGINAÇÃO
+// ABAS
+function Tabs({ forms, currentId, onSelect }) {
+  return (
+    <div className="tabs">
+      {forms.map((form) => (
+        <button
+          key={form.id}
+          className={currentId === form.id ? "tab active" : "tab"}
+          onClick={() => onSelect(form.id)}
+        >
+          {form.title}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+// MENU SUSPENSO
+function Dropdown({ value, onChange }) {
+  const [open, setOpen] = useState(false);
+
+  const options = ["Eu mesmo", "Outra pessoa", "Ambos"];
+
+  return (
+    <div className="dropdown">
+      <label>Quem está preenchendo este formulário?</label>
+
+      <button
+        type="button"
+        className="dropdown-button"
+        onClick={() => setOpen(!open)}
+      >
+        {value || "Selecione uma opção"}
+        <span>{open ? "▲" : "▼"}</span>
+      </button>
+
+      {open && (
+        <div className="dropdown-options">
+          {options.map((option) => (
+            <button
+              type="button"
+              key={option}
+              onClick={() => {
+                onChange(option);
+                setOpen(false);
+              }}
+            >
+              {option}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// PAGINAÇÃO
 function Pagination({ currentPage, totalPages, onPageChange }) {
   return (
     <div className="pagination">
@@ -91,7 +188,6 @@ function Pagination({ currentPage, totalPages, onPageChange }) {
             key={index}
             className={currentPage === index ? "active" : ""}
             onClick={() => onPageChange(index)}
-            aria-current={currentPage === index ? "page" : undefined}
           >
             {index + 1}
           </button>
@@ -108,182 +204,66 @@ function Pagination({ currentPage, totalPages, onPageChange }) {
   );
 }
 
-// COMPONENTE 3: BARRA DE PROGRESSO
-function ProgressBar({ value }) {
-  return (
-    <div className="progress-area">
-      <div className="progress-label">
-        <span>Progresso do formulário</span>
-        <strong>{value}%</strong>
-      </div>
-
-      <div
-        className="progress-track"
-        role="progressbar"
-        aria-valuenow={value}
-        aria-valuemin="0"
-        aria-valuemax="100"
-      >
-        <div
-          className="progress-fill"
-          style={{ width: `${value}%` }}
-        ></div>
-      </div>
-    </div>
-  );
-}
-
-// COMPONENTE 4: ABAS
-function Tabs({ forms, currentId, onSelect }) {
-  return (
-    <div className="tabs" role="tablist">
-      {forms.map((form) => (
-        <button
-          key={form.id}
-          role="tab"
-          aria-selected={currentId === form.id}
-          className={currentId === form.id ? "tab active" : "tab"}
-          onClick={() => onSelect(form.id)}
-        >
-          {form.icon} {form.title}
-        </button>
-      ))}
-    </div>
-  );
-}
-
-// COMPONENTE 5: MENU SUSPENSO
-function Dropdown({ value, onChange }) {
-  const [open, setOpen] = useState(false);
-
-  const options = [
-    "Eu mesmo(a)",
-    "Outra pessoa",
-    "Ambos"
-  ];
-
-  return (
-    <div className="dropdown">
-      <label>Quem está preenchendo?</label>
-
-      <button
-        className="dropdown-button"
-        onClick={() => setOpen(!open)}
-        aria-expanded={open}
-        aria-haspopup="true"
-      >
-        {value} <span>⌄</span>
-      </button>
-
-      {open && (
-        <div className="dropdown-options">
-          {options.map((option) => (
-            <button
-              key={option}
-              onClick={() => {
-                onChange(option);
-                setOpen(false);
-              }}
-            >
-              {option}
-              {value === option ? " ✓" : ""}
-            </button>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-}
-
-// COMPONENTE 6: NOTIFICAÇÃO TOAST
+// NOTIFICAÇÃO
 function Toast({ toast, onClose }) {
   if (!toast) return null;
 
   return (
-    <div
-      className={`toast ${toast.type}`}
-      role="status"
-      aria-live="polite"
-    >
-      <span>
-        {toast.type === "success" ? "✓" : "!"}
-      </span>
-
-      {toast.message}
-
-      <button onClick={onClose} aria-label="Fechar notificação">
-        ×
-      </button>
+    <div className={`toast ${toast.type}`}>
+      <span>{toast.message}</span>
+      <button onClick={onClose}>×</button>
     </div>
   );
 }
 
-// PERGUNTAS DO ACORDEÃO
-const faqItems = [
-  {
-    question: "Minhas respostas ficam salvas?",
-    answer:
-      "Sim! As respostas são salvas automaticamente no navegador utilizado."
-  },
-  {
-    question: "Posso alterar uma resposta depois?",
-    answer:
-      "Sim. Basta abrir novamente o formulário e modificar as informações."
-  },
-  {
-    question: "Como sei que terminei um formulário?",
-    answer:
-      "A barra de progresso mostra a porcentagem preenchida. Para concluir, todos os campos obrigatórios precisam estar preenchidos."
-  },
-  {
-    question: "O que acontece quando clico em Início?",
-    answer:
-      "Você retorna à página inicial. Suas respostas continuam salvas."
-  }
-];
+// APLICAÇÃO PRINCIPAL
+function App() {
+  const navigate = useNavigate();
+  const { formId } = useParams();
 
-// COMPONENTE PRINCIPAL
-export default function App() {
-
-  // CARREGAMENTO DOS DADOS SALVOS
   const [savedData, setSavedData] = useState(() => {
     try {
-      const stored = localStorage.getItem("formly-data");
+      const data = localStorage.getItem("formly-data");
 
-      return stored
-        ? JSON.parse(stored)
+      return data
+        ? JSON.parse(data)
         : {
-            respostas: {},
-            responsavel: "Eu mesmo(a)",
-            concluidos: []
+            answers: {},
+            completed: {},
+            responsaveis: {}
           };
     } catch {
       return {
-        respostas: {},
-        responsavel: "Eu mesmo(a)",
-        concluidos: []
+        answers: {},
+        completed: {},
+        responsaveis: {}
       };
     }
   });
 
-  const [currentFormIndex, setCurrentFormIndex] = useState(0);
-  const [showForm, setShowForm] = useState(false);
   const [toast, setToast] = useState(null);
+
+  const currentFormIndex = forms.findIndex(
+    (form) => form.id === formId
+  );
+
+  const showForm = Boolean(formId);
 
   const currentForm = forms[currentFormIndex];
 
-  const currentAnswers =
-    savedData.respostas[currentForm.id] || {};
-
-  // SALVAR AUTOMATICAMENTE
+  // VERIFICA A URL
   useEffect(() => {
-    localStorage.setItem(
-      "formly-data",
-      JSON.stringify(savedData)
-    );
+    if (formId && currentFormIndex === -1) {
+      navigate("/", { replace: true });
+    }
+  }, [formId, currentFormIndex, navigate]);
+
+  // SALVA OS DADOS NO NAVEGADOR
+  useEffect(() => {
+    localStorage.setItem("formly-data", JSON.stringify(savedData));
   }, [savedData]);
 
-  // FECHAR TOAST AUTOMATICAMENTE
+  // FECHA A NOTIFICAÇÃO AUTOMATICAMENTE
   useEffect(() => {
     if (!toast) return;
 
@@ -294,31 +274,18 @@ export default function App() {
     return () => clearTimeout(timer);
   }, [toast]);
 
-  // ATUALIZAR RESPOSTAS
-  function updateAnswer(fieldName, value) {
-    setSavedData((previous) => ({
-      ...previous,
-      respostas: {
-        ...previous.respostas,
-        [currentForm.id]: {
-          ...(previous.respostas[currentForm.id] || {}),
-          [fieldName]: value
-        }
-      }
-    }));
-  }
-
-  // CALCULAR PROGRESSO
+  // CALCULA O PROGRESSO
   function getProgress(form) {
-    const answers = savedData.respostas[form.id] || {};
+    const answers = savedData.answers[form.id] || {};
 
     const requiredFields = form.fields.filter(
       (field) => field.required
     );
 
+    if (requiredFields.length === 0) return 100;
+
     const filledFields = requiredFields.filter(
-      (field) =>
-        String(answers[field.name] || "").trim() !== ""
+      (field) => String(answers[field.name] || "").trim() !== ""
     );
 
     return Math.round(
@@ -326,34 +293,72 @@ export default function App() {
     );
   }
 
-  // ABRIR FORMULÁRIO
+  // NAVEGAÇÃO
   function openForm(index) {
-    setCurrentFormIndex(index);
-    setShowForm(true);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    navigate(`/formulario/${forms[index].id}`);
   }
 
-  // NAVEGAR ENTRE FORMULÁRIOS
   function goToForm(index) {
     if (index < 0 || index >= forms.length) return;
 
-    setCurrentFormIndex(index);
-    setShowForm(true);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    navigate(`/formulario/${forms[index].id}`);
   }
 
-  // CONCLUIR FORMULÁRIO
-  function finishForm() {
-    const missing = currentForm.fields.some(
+  function goHome() {
+    navigate("/");
+  }
+
+  // RESPOSTAS DO FORMULÁRIO ATUAL
+  const currentAnswers = currentForm
+    ? savedData.answers[currentForm.id] || {}
+    : {};
+
+  // ATUALIZA OS CAMPOS
+  function handleChange(fieldName, value) {
+    setSavedData((previous) => ({
+      ...previous,
+
+      answers: {
+        ...previous.answers,
+        [currentForm.id]: {
+          ...(previous.answers[currentForm.id] || {}),
+          [fieldName]: value
+        }
+      },
+
+      completed: {
+        ...previous.completed,
+        [currentForm.id]: false
+      }
+    }));
+  }
+
+  // ATUALIZA QUEM ESTÁ PREENCHENDO
+  function handleResponsavel(value) {
+    setSavedData((previous) => ({
+      ...previous,
+
+      responsaveis: {
+        ...previous.responsaveis,
+        [currentForm.id]: value
+      }
+    }));
+  }
+
+  // CONCLUI O FORMULÁRIO
+  function handleComplete(event) {
+    event.preventDefault();
+
+    const missingFields = currentForm.fields.filter(
       (field) =>
         field.required &&
         !String(currentAnswers[field.name] || "").trim()
     );
 
-    if (missing) {
+    if (missingFields.length > 0) {
       setToast({
         type: "error",
-        message: "Preencha todos os campos obrigatórios!"
+        message: "Preencha todos os campos obrigatórios antes de concluir."
       });
 
       return;
@@ -361,9 +366,11 @@ export default function App() {
 
     setSavedData((previous) => ({
       ...previous,
-      concluidos: previous.concluidos.includes(currentForm.id)
-        ? previous.concluidos
-        : [...previous.concluidos, currentForm.id]
+
+      completed: {
+        ...previous.completed,
+        [currentForm.id]: true
+      }
     }));
 
     setToast({
@@ -372,75 +379,64 @@ export default function App() {
     });
   }
 
-  // VOLTAR PARA A PÁGINA INICIAL
-  function goHome() {
-    setShowForm(false);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }
-
-  const allCompleted = forms.every((form) =>
-    savedData.concluidos.includes(form.id)
-  );
-
   return (
     <div className="app">
 
       {/* CABEÇALHO */}
       <header className="header">
         <button className="logo" onClick={goHome}>
-          <span>F</span> formly
+          Formly
         </button>
 
-        <button className="home-button" onClick={goHome}>
-          ⌂ Início
-        </button>
+        {showForm && (
+          <button className="home-button" onClick={goHome}>
+            ← Voltar ao início
+          </button>
+        )}
       </header>
 
       <main className="container">
 
         {!showForm ? (
-
-          // PÁGINA INICIAL
           <>
+            {/* PÁGINA INICIAL */}
             <section className="hero">
               <span className="eyebrow">
                 ORGANIZE SUAS INFORMAÇÕES
               </span>
 
               <h1>
-                Seus formulários,
-                <br />
-                <span>em um só lugar.</span>
+                Bem-vindo ao <span>Formly!</span>
               </h1>
 
               <p>
-                Preencha, acompanhe seu progresso e mantenha
-                suas informações organizadas.
+                Organize suas informações preenchendo os formulários
+                disponíveis abaixo.
               </p>
 
               <div className="notice">
-                ✦ Suas respostas são salvas automaticamente.
+                Suas respostas ficam salvas automaticamente no navegador.
               </div>
             </section>
 
             <section className="forms-section">
+
               <div className="section-heading">
                 <div>
-                  <span className="eyebrow">
-                    ÁREA DE PREENCHIMENTO
-                  </span>
-
-                  <h2>Escolha um formulário</h2>
-
-                  <p>
-                    Selecione um dos formulários abaixo para começar.
-                  </p>
+                  <h2>Meus formulários</h2>
+                  <p>Escolha um formulário para começar.</p>
                 </div>
 
                 <span className="form-count">
-                  {savedData.concluidos.length} de {forms.length} concluídos
+                  {forms.length} formulários disponíveis
                 </span>
               </div>
+
+              {forms.every((form) => savedData.completed[form.id]) && (
+                <div className="completion-banner">
+                  Parabéns! Você concluiu todos os formulários.
+                </div>
+              )}
 
               <div className="form-cards">
                 {forms.map((form, index) => (
@@ -449,7 +445,9 @@ export default function App() {
                     key={form.id}
                     onClick={() => openForm(index)}
                   >
-                    <span className="card-icon">{form.icon}</span>
+                    <span className="card-icon">
+                      {form.icon}
+                    </span>
 
                     <h3>{form.title}</h3>
 
@@ -460,7 +458,7 @@ export default function App() {
                         style={{
                           width: `${getProgress(form)}%`
                         }}
-                      ></div>
+                      />
                     </div>
 
                     <span className="card-percentage">
@@ -468,151 +466,169 @@ export default function App() {
                     </span>
 
                     <span className="card-link">
-                      Abrir formulário →
+                      {savedData.completed[form.id]
+                        ? "✓ Formulário concluído"
+                        : "Acessar formulário →"}
                     </span>
                   </button>
                 ))}
               </div>
             </section>
 
-            {allCompleted && (
-              <div className="completion-banner">
-                ✓ Todos os formulários foram concluídos!
-              </div>
-            )}
-
             <Accordion items={faqItems} />
           </>
-
         ) : (
+          currentForm && (
+            <>
+              {/* ÁREA DOS FORMULÁRIOS */}
+              <section className="workspace">
 
-          // ÁREA DOS FORMULÁRIOS
-          <section className="workspace">
+                <button className="back-link" onClick={goHome}>
+                  ← Voltar para a página inicial
+                </button>
 
-            <button className="back-link" onClick={goHome}>
-              ← Voltar para início
-            </button>
-
-            <div className="workspace-heading">
-              <span className="eyebrow">
-                PREENCHIMENTO DE FORMULÁRIO
-              </span>
-
-              <h1>{currentForm.title}</h1>
-
-              <p>{currentForm.description}</p>
-            </div>
-
-            {/* ABAS */}
-            <Tabs
-              forms={forms}
-              currentId={currentForm.id}
-              onSelect={(id) =>
-                goToForm(
-                  forms.findIndex((form) => form.id === id)
-                )
-              }
-            />
-
-            <div className="form-panel">
-
-              <div className="panel-heading">
-                <div>
-                  <span className="step-label">
-                    FORMULÁRIO {currentFormIndex + 1} DE {forms.length}
+                <div className="workspace-heading">
+                  <span className="eyebrow">
+                    PREENCHIMENTO DE FORMULÁRIO
                   </span>
 
-                  <h2>{currentForm.title}</h2>
+                  <h1>{currentForm.title}</h1>
+
+                  <p>{currentForm.description}</p>
                 </div>
 
-                {savedData.concluidos.includes(currentForm.id) && (
-                  <span className="completed-label">
-                    ✓ Concluído
-                  </span>
-                )}
-              </div>
+                {/* ABAS */}
+                <Tabs
+                  forms={forms}
+                  currentId={currentForm.id}
+                  onSelect={(id) => {
+                    const index = forms.findIndex(
+                      (form) => form.id === id
+                    );
 
-              {/* BARRA DE PROGRESSO */}
-              <ProgressBar value={getProgress(currentForm)} />
+                    goToForm(index);
+                  }}
+                />
 
-              {/* MENU SUSPENSO */}
-              <Dropdown
-                value={savedData.responsavel}
-                onChange={(value) =>
-                  setSavedData((previous) => ({
-                    ...previous,
-                    responsavel: value
-                  }))
-                }
-              />
+                {/* PAINEL */}
+                <section className="form-panel">
 
-              {/* CAMPOS DO FORMULÁRIO */}
-              <div className="fields-grid">
-                {currentForm.fields.map((field) => (
-                  <label className="form-field" key={field.name}>
-                    <span>
-                      {field.label}
+                  <div className="panel-heading">
+                    <div>
+                      <span className="step-label">
+                        ETAPA {currentFormIndex + 1} DE {forms.length}
+                      </span>
 
-                      {field.required && (
-                        <strong className="required"> *</strong>
-                      )}
-                    </span>
+                      <h2>{currentForm.title}</h2>
+                    </div>
 
-                    <input
-                      type={field.type || "text"}
-                      value={currentAnswers[field.name] || ""}
-                      onChange={(event) =>
-                        updateAnswer(
-                          field.name,
-                          event.target.value
-                        )
-                      }
-                      placeholder={`Digite ${field.label.toLowerCase()}`}
-                    />
-                  </label>
-                ))}
-              </div>
+                    {savedData.completed[currentForm.id] && (
+                      <span className="completed-label">
+                        ✓ Concluído
+                      </span>
+                    )}
+                  </div>
 
-              <p className="required-note">
-                * Campos obrigatórios
-              </p>
+                  <ProgressBar value={getProgress(currentForm)} />
 
-              <div className="form-actions">
-                <button
-                  className="secondary-button"
-                  onClick={goHome}
-                >
-                  Salvar e sair
-                </button>
+                  <Dropdown
+                    value={
+                      savedData.responsaveis[currentForm.id] || ""
+                    }
+                    onChange={handleResponsavel}
+                  />
 
-                <button
-                  className="primary-button"
-                  onClick={finishForm}
-                >
-                  Concluir formulário ✓
-                </button>
-              </div>
-            </div>
+                  <form onSubmit={handleComplete}>
 
-            {/* PAGINAÇÃO */}
-            <Pagination
-              currentPage={currentFormIndex}
-              totalPages={forms.length}
-              onPageChange={goToForm}
-            />
+                    <div className="fields-grid">
+                      {currentForm.fields.map((field) => (
+                        <label
+                          className="form-field"
+                          key={field.name}
+                        >
+                          <span>
+                            {field.label}
 
-          </section>
+                            {field.required && (
+                              <span className="required"> *</span>
+                            )}
+                          </span>
+
+                          <input
+                            type={field.type}
+                            value={currentAnswers[field.name] || ""}
+                            onChange={(event) =>
+                              handleChange(
+                                field.name,
+                                event.target.value
+                              )
+                            }
+                            placeholder={
+                              field.type === "date"
+                                ? undefined
+                                : `Digite ${field.label.toLowerCase()}`
+                            }
+                          />
+                        </label>
+                      ))}
+                    </div>
+
+                    <p className="required-note">
+                      * Campos obrigatórios
+                    </p>
+
+                    <div className="form-actions">
+                      <button
+                        type="button"
+                        className="secondary-button"
+                        onClick={() => goToForm(currentFormIndex - 1)}
+                        disabled={currentFormIndex === 0}
+                      >
+                        ← Formulário anterior
+                      </button>
+
+                      <button
+                        type="submit"
+                        className="primary-button"
+                      >
+                        Concluir formulário
+                      </button>
+
+                      <button
+                        type="button"
+                        className="secondary-button"
+                        onClick={() => goToForm(currentFormIndex + 1)}
+                        disabled={currentFormIndex === forms.length - 1}
+                      >
+                        Próximo formulário →
+                      </button>
+                    </div>
+
+                  </form>
+                </section>
+
+                {/* PAGINAÇÃO */}
+                <Pagination
+                  currentPage={currentFormIndex}
+                  totalPages={forms.length}
+                  onPageChange={goToForm}
+                />
+
+              </section>
+
+              <Accordion items={faqItems} />
+            </>
+          )
         )}
 
       </main>
 
       {/* RODAPÉ */}
       <footer className="footer">
-        <strong>F formly</strong>
-        <span>Organização simples para suas informações.</span>
+        <p>Formly © 2026 - Organização simples e prática de formulários.</p>
       </footer>
 
-      {/* NOTIFICAÇÃO TOAST */}
+      {/* NOTIFICAÇÕES */}
       <Toast
         toast={toast}
         onClose={() => setToast(null)}
@@ -621,3 +637,5 @@ export default function App() {
     </div>
   );
 }
+
+export default App;

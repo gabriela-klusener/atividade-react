@@ -153,12 +153,6 @@ button {
   box-shadow: 0 8px 20px #0000000c;
 }
 
-.card-icon {
-  display: inline-block;
-  font-size: 27px;
-  margin-bottom: 15px;
-}
-
 .form-card h3 {
   font-size: 17px;
   margin-bottom: 8px;
