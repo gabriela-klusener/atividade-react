@@ -1,0 +1,638 @@
+/* CONFIGURAÇÕES GERAIS */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #f5f7fb;
+  color: #20283a;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+/* CABEÇALHO */
+
+.header {
+  background: white;
+  border-bottom: 1px solid #e5e9f1;
+  padding: 18px 8%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  background: none;
+  border: none;
+  font-size: 23px;
+  font-weight: bold;
+  color: #20283a;
+}
+
+.logo span {
+  background: #4969d2;
+  color: white;
+  padding: 7px 11px;
+  border-radius: 9px;
+}
+
+.home-button {
+  background: #edf2ff;
+  color: #4565cb;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 16px;
+}
+
+/* CONTEÚDO PRINCIPAL */
+
+.container {
+  max-width: 1050px;
+  width: 90%;
+  margin: auto;
+}
+
+.hero {
+  padding: 65px 0 45px;
+}
+
+.eyebrow {
+  color: #5474d5;
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.hero h1,
+.workspace-heading h1 {
+  font-size: 45px;
+  margin: 15px 0;
+  line-height: 1.15;
+}
+
+.hero h1 span {
+  color: #5474d5;
+}
+
+.hero p,
+.section-heading p,
+.workspace-heading p {
+  color: #788196;
+  line-height: 1.7;
+}
+
+.notice {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 11px;
+  background: #edf2ff;
+  color: #5068ae;
+  border-radius: 8px;
+  font-size: 12px;
+}
+
+/* CARDS DOS FORMULÁRIOS */
+
+.forms-section {
+  padding: 20px 0 55px;
+}
+
+.section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 15px;
+  margin-bottom: 22px;
+}
+
+.section-heading h2,
+.faq h2 {
+  margin: 9px 0;
+  font-size: 25px;
+}
+
+.form-count {
+  background: white;
+  border: 1px solid #e5e9f1;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.form-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.form-card {
+  background: white;
+  border: 1px solid #e5e9f1;
+  border-radius: 14px;
+  padding: 23px;
+  text-align: left;
+  color: #20283a;
+  transition: 0.2s;
+}
+
+.form-card:hover {
+  transform: translateY(-4px);
+  border-color: #9db2f4;
+  box-shadow: 0 8px 20px #0000000c;
+}
+
+.card-icon {
+  display: inline-block;
+  font-size: 27px;
+  margin-bottom: 15px;
+}
+
+.form-card h3 {
+  font-size: 17px;
+  margin-bottom: 8px;
+}
+
+.form-card p {
+  color: #81899b;
+  font-size: 13px;
+  min-height: 38px;
+  line-height: 1.5;
+}
+
+.mini-progress {
+  height: 6px;
+  background: #edf0f6;
+  border-radius: 20px;
+  margin-top: 20px;
+  overflow: hidden;
+}
+
+.mini-progress div {
+  height: 100%;
+  background: #5474d5;
+  transition: width 0.3s;
+}
+
+.card-percentage {
+  display: block;
+  font-size: 11px;
+  color: #788196;
+  margin-top: 8px;
+}
+
+.card-link {
+  display: block;
+  margin-top: 16px;
+  color: #4968ce;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.completion-banner {
+  background: #e9f8f0;
+  color: #18794e;
+  padding: 18px;
+  border-radius: 10px;
+  margin-bottom: 35px;
+  font-weight: bold;
+}
+
+/* ACORDEÃO */
+
+.faq {
+  padding: 45px 0 65px;
+  border-top: 1px solid #e5e9f1;
+}
+
+.subtitle {
+  color: #788196;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.accordion-item {
+  background: white;
+  border: 1px solid #e5e9f1;
+  margin-bottom: 8px;
+  border-radius: 9px;
+  overflow: hidden;
+}
+
+.accordion-button {
+  width: 100%;
+  background: white;
+  border: none;
+  padding: 18px;
+  display: flex;
+  justify-content: space-between;
+  text-align: left;
+  color: #29334a;
+  font-weight: bold;
+}
+
+.accordion-button span {
+  color: #5474d5;
+  font-size: 20px;
+}
+
+.accordion-content {
+  padding: 0 18px 18px;
+  color: #788196;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+/* ÁREA DOS FORMULÁRIOS */
+
+.workspace {
+  padding: 35px 0 65px;
+}
+
+.back-link {
+  background: none;
+  border: none;
+  color: #63708a;
+  margin-bottom: 25px;
+  font-weight: bold;
+}
+
+.workspace-heading {
+  margin-bottom: 25px;
+}
+
+.workspace-heading h1 {
+  font-size: 38px;
+}
+
+/* ABAS */
+
+.tabs {
+  display: flex;
+  gap: 9px;
+  margin-bottom: 18px;
+  overflow-x: auto;
+}
+
+.tab {
+  flex: 1;
+  min-width: max-content;
+  padding: 14px;
+  background: white;
+  border: 1px solid #e5e9f1;
+  border-radius: 9px;
+  color: #68748b;
+  font-weight: bold;
+}
+
+.tab.active {
+  background: #edf2ff;
+  border-color: #9db2f4;
+  color: #4565cb;
+}
+
+/* PAINEL DO FORMULÁRIO */
+
+.form-panel {
+  background: white;
+  border: 1px solid #e5e9f1;
+  border-radius: 15px;
+  padding: 30px;
+}
+
+.panel-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.panel-heading h2 {
+  margin-top: 8px;
+}
+
+.step-label {
+  color: #8791a5;
+  font-size: 11px;
+  font-weight: bold;
+}
+
+.completed-label {
+  background: #e9f8f0;
+  color: #18794e;
+  padding: 8px;
+  border-radius: 20px;
+  font-size: 11px;
+}
+
+/* BARRA DE PROGRESSO */
+
+.progress-area {
+  margin-bottom: 25px;
+}
+
+.progress-label {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-size: 12px;
+  color: #788196;
+}
+
+.progress-label strong {
+  color: #4969d2;
+}
+
+.progress-track {
+  height: 8px;
+  background: #edf0f6;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #5474d5;
+  border-radius: 20px;
+  transition: width 0.3s;
+}
+
+/* MENU SUSPENSO */
+
+.dropdown {
+  position: relative;
+  max-width: 320px;
+  margin-bottom: 25px;
+}
+
+.dropdown label {
+  display: block;
+  font-size: 12px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.dropdown-button {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 12px;
+  background: white;
+  border: 1px solid #dfe4ed;
+  border-radius: 8px;
+  text-align: left;
+  color: #38445d;
+}
+
+.dropdown-options {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: white;
+  border: 1px solid #dfe4ed;
+  border-radius: 8px;
+  z-index: 5;
+  box-shadow: 0 8px 20px #00000015;
+}
+
+.dropdown-options button {
+  width: 100%;
+  padding: 12px;
+  text-align: left;
+  background: white;
+  border: none;
+  color: #38445d;
+}
+
+.dropdown-options button:hover {
+  background: #edf2ff;
+}
+
+/* CAMPOS */
+
+.fields-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px 16px;
+}
+
+.form-field {
+  display: block;
+}
+
+.form-field span {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.form-field input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #dfe4ed;
+  border-radius: 8px;
+  outline-color: #5474d5;
+}
+
+.required {
+  color: #d95361;
+}
+
+.required-note {
+  color: #929bad;
+  font-size: 11px;
+  margin-top: 18px;
+}
+
+/* BOTÕES DO FORMULÁRIO */
+
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  border-top: 1px solid #edf0f5;
+  padding-top: 22px;
+  margin-top: 22px;
+}
+
+.primary-button,
+.secondary-button {
+  padding: 12px 17px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.primary-button {
+  background: #4969d2;
+  color: white;
+  border: 1px solid #4969d2;
+}
+
+.primary-button:hover {
+  background: #3656bd;
+}
+
+.secondary-button {
+  background: white;
+  color: #68748b;
+  border: 1px solid #dfe4ed;
+}
+
+/* PAGINAÇÃO */
+
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.pagination > button,
+.page-numbers button {
+  padding: 10px 14px;
+  background: white;
+  border: 1px solid #dfe4ed;
+  border-radius: 8px;
+  color: #68748b;
+}
+
+.pagination button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.page-numbers {
+  display: flex;
+  gap: 6px;
+}
+
+.page-numbers button.active {
+  background: #edf2ff;
+  border-color: #9db2f4;
+  color: #4565cb;
+  font-weight: bold;
+}
+
+/* RODAPÉ */
+
+.footer {
+  background: white;
+  border-top: 1px solid #e5e9f1;
+  padding: 22px 8%;
+  display: flex;
+  justify-content: space-between;
+  color: #929bad;
+  font-size: 12px;
+}
+
+/* NOTIFICAÇÃO TOAST */
+
+.toast {
+  position: fixed;
+  bottom: 22px;
+  right: 22px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: calc(100% - 32px);
+  padding: 15px;
+  border-radius: 10px;
+  color: white;
+  font-size: 13px;
+  box-shadow: 0 8px 25px #00000025;
+}
+
+.toast.success {
+  background: #18794e;
+}
+
+.toast.error {
+  background: #b8424b;
+}
+
+.toast button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 20px;
+}
+
+/* RESPONSIVIDADE */
+
+@media (max-width: 700px) {
+  .container {
+    width: 92%;
+  }
+
+  .hero {
+    padding-top: 45px;
+  }
+
+  .hero h1 {
+    font-size: 35px;
+  }
+
+  .form-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .section-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .fields-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-panel {
+    padding: 20px;
+  }
+
+  .tabs {
+    padding-bottom: 5px;
+  }
+
+  .tab {
+    flex: 0 0 auto;
+  }
+
+  .pagination {
+    flex-wrap: wrap;
+  }
+
+  .page-numbers {
+    order: 3;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .form-actions {
+    flex-direction: column-reverse;
+  }
+
+  .form-actions button {
+    width: 100%;
+  }
+
+  .footer {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
